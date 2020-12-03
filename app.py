@@ -52,7 +52,12 @@ def convert_date(date):
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    id = session.get("user_id")
+    if id != None:
+        records = db.execute("SELECT * FROM records WHERE id = :id", id=id)
+    else:
+        records = None
+    return render_template("index.html", records=records)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():

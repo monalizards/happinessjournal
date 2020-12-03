@@ -11,5 +11,9 @@ CREATE TABLE IF NOT EXISTS 'records' (
     'id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
     'user_id' INTEGER NOT NULL,
     'name' TEXT NOT NULL,
+    'timestamp' DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+INSERT INTO records ('user_id', 'name')
+    VALUES (1, 'I think ');
