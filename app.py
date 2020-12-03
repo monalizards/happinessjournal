@@ -88,17 +88,23 @@ def register():
     else:
         return render_template("register.html")
 
-# TODO: login
 @app.route("/login", methods=["GET", "POST"])
 def login():
     session.clear()
     # Perform checks and insert when a form is submitted via POST
     if request.method == "POST":
-        if not request.form.get("username") or not request.form.get("email") or not request.form.get("password") or not request.form.get("confirm") or not request.form.get("birthday"):
-            return "error"
-        return "posted"
-        
-    
+        # Ensure all fields were filled
+        if not request.form.get("username") or not request.form.get("password"):
+            return error("Missing field(s)")
+        # Query database for username
+        rows = db.execute("SELECT * FROM users WHERE username = :username", username=request.form.get("username"))
+        # Ensure username exists and password is correct
+        if len(rows) != 1 or not verify(request.form.get("password"), rows[0]["hash"]):
+            return error("invalid username and/or password")
+        # Remember which user has logged in
+        session["user_id"] = rows[0]["id"]
+        # Redirect user to home page
+        return redirect("/")
     # Render login form when a form is 
     else:
         return render_template("login.html")
