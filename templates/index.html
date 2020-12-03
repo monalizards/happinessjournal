@@ -1,5 +1,17 @@
 {% extends "layout.html" %}
 
+{% block banner %}
+    {% if session.get('user_id') == None %}
+        <div class="banner">
+            <h1>Happiness Journal</h1>
+            <h3>A record of things that have made you smile today</h3>
+            <a href="/register" class="btn btn-primary btn-signup">Register</a>
+        </div>
+    {% endif %}
+{% endblock %}
+
 {% block body %}
- {{session_user_id}}
+    {% if session.get('user_id') %}
+        {{ session.user_id }}
+    {% endif %}
 {% endblock %}

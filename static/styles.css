@@ -1,22 +1,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Annie+Use+Your+Telescope&family=Nanum+Pen+Script&family=Tangerine:wght@400;700&display=swap');/* fonts */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 .text-title {
     font-family: 'Great Vibes', cursive;
 }
 
-nav {
+form, .card {
+    font-size: larger;
+    letter-spacing: 0.1em;
+    font-family: 'Annie Use Your Telescope', cursive;
+}
+
+a {
     font-family: 'Nanum Pen Script', cursive;
     font-size: 1.2em;
 }
 
-form, .card {
-    font-family: 'Annie Use Your Telescope', cursive;
-    font-size: larger;
-    letter-spacing: 0.1em;
-}
-
 h1, h2, h3 {
     font-family: 'Tangerine', cursive;
+}
+
+input {
+    font-family: 'Open Sans', sans-serif;
 }
 
 /* background color */
@@ -36,4 +41,20 @@ form {
     background-color: #343a40;
     padding: 20px;
     border-radius: 4px;
+}
+
+/* banner */
+.banner {
+    color: rgb(68, 68, 68);
+    padding: 200px 40px;
+    width: 100%;
+    text-align: center;
+    background-image: url('https://source.unsplash.com/fVUl6kzIvLg');
+    backdrop-filter: grayscale(100%);
+    background-size: cover;
+}
+
+/* sign up button */
+.btn-signup {
+    padding: 8px 40px;
 }

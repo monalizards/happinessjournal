@@ -50,9 +50,7 @@ def verify(password, hash):
 def convert_date(date):
     return datetime.fromisoformat(date).isoformat()
 
-# TODO: index
 @app.route("/")
-@login_required
 def index():
     return render_template("index.html")
 
