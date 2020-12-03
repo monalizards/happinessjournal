@@ -36,14 +36,37 @@ def login_required(f):
 @app.route("/")
 @login_required
 def index():
-    if session.get("user_id") is None:
-        return "Not logged in"
-    return "logged_in"
+    return render_template("index.html")
+
+# TODO: register
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    session.clear()
+    # Perform checks and insert when a form is submitted via POST
+    if request.method == "POST":
+        if not request.form.get("username") or not request.form.get("email") or not request.form.get("password") or not request.form.get("confirm") or not request.form.get("birthday"):
+            return "error"
+        return "posted"
+        
+    
+    # Render registration form when a form is 
+    else:
+        return render_template("register.html")
 
 # TODO: login
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    return "login form"
+    session.clear()
+    # Perform checks and insert when a form is submitted via POST
+    if request.method == "POST":
+        if not request.form.get("username") or not request.form.get("email") or not request.form.get("password") or not request.form.get("confirm") or not request.form.get("birthday"):
+            return "error"
+        return "posted"
+        
+    
+    # Render login form when a form is 
+    else:
+        return render_template("login.html")
 
 # Logout: clear session
 @app.route("/logout")
