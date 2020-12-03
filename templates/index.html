@@ -4,7 +4,7 @@
     {% if session.get('user_id') == None %}
         <div class="banner">
             <h1>Happiness Journal</h1>
-            <h3>A record of things that have made you smile today</h3>
+            <h2>A record of things that have made you smile today</h2>
             <a href="/register" class="btn btn-primary btn-signup">Register</a>
         </div>
     {% endif %}
@@ -15,9 +15,9 @@
         {% if records == {} %}
         <h2>Nothing here yet</h2>
         {% else %}
+        {% for key in records %}
             <div class="date-card">
                 <ul class="date-list">
-                    {% for key in records %}
                         <li>
                             <h1>{{ key }}</h1>
                             <ul class="record-list">
@@ -31,13 +31,12 @@
                                 {% endfor %}
                             </ul>
                         </li>
-                    {% endfor %}
-                </ul>
-            </div>
+                    </ul>
+                </div>
+            {% endfor %}
         {% endif %}
+        <form class="record-form" action="/write" method="post">
+            <input type="text" name="name" autocomplete="off" placeholder="What made you smile today?">
+        </form>
     {% endif %}
-    
-    <form class="record-form" action="/write" method="post">
-        <input type="text" name="name" autocomplete="off" placeholder="What made you smile today?">
-    </form>
 {% endblock %}

@@ -58,18 +58,33 @@ form {
 
 /* banner */
 .banner {
-    color: rgb(68, 68, 68);
+    color: white;
     padding: 200px 40px;
     width: 100%;
     text-align: center;
-    background-image: url('https://source.unsplash.com/fVUl6kzIvLg');
+    background: linear-gradient(
+        rgba(0, 0, 0, 0.7), 
+        rgba(0, 0, 0, 0.7)
+      ), url('https://source.unsplash.com/fVUl6kzIvLg');
     backdrop-filter: grayscale(100%);
     background-size: cover;
 }
 
+.banner h1 {
+    font-size: 60px;
+}
+
+.banner h2 {
+    font-size: 32px;
+}
+
+.banner a {
+    font-size: 1.2em;
+}
+
 /* sign up button */
 .btn-signup {
-    padding: 8px 40px;
+    padding: 4px 40px;
 }
 
 /* lists */
@@ -91,6 +106,7 @@ form {
     background-color: #343a40;
     padding: 20px;
     border-radius: 4px;
+    margin-bottom: 16px;
 }
 
 /* delete button in  */
