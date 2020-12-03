@@ -12,9 +12,21 @@
 
 {% block body %}
     {% if session.get('user_id') %}
-        {{ session.user_id }}
-        {% for record in records %}
-            {{ record }}
-        {% endfor %}
+        <div class="date-card">
+            <ul class="date-list">
+                {% for key in records %}
+                    <li>
+                        <h1>{{ key }}</h1>
+                        <ul class="record-list">
+                            {% for record in records[key] %}
+                                <li>
+                                    {{ record['name'] }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     {% endif %}
 {% endblock %}

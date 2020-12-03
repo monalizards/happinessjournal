@@ -20,7 +20,7 @@ h1, h2, h3 {
     font-family: 'Tangerine', cursive;
 }
 
-input {
+input, li {
     font-family: 'Open Sans', sans-serif;
 }
 
@@ -33,7 +33,7 @@ input {
 /* main */
 .main {
     max-width: 600px;
-    margin: 40px auto; 
+    margin: 24px auto; 
 }
 
 /* form */
@@ -57,4 +57,25 @@ form {
 /* sign up button */
 .btn-signup {
     padding: 8px 40px;
+}
+
+/* lists */
+.date-list {
+    list-style: none;
+    padding: 0;
+}
+
+.record-list {
+    list-style: "✰";
+}
+
+.record-list li {
+    padding-left: 8px;
+}
+
+/* date-card */
+.date-card {
+    background-color: #343a40;
+    padding: 20px;
+    border-radius: 4px;
 }

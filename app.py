@@ -50,11 +50,25 @@ def verify(password, hash):
 def convert_date(date):
     return datetime.fromisoformat(date).isoformat()
 
+# Convert records to python object with date as key
+def convert_records(rows):
+    records = {}
+    for row in rows:
+        date = datetime.fromisoformat(row['timestamp']).strftime("%-d %B, %Y")
+        records[date] = records.get(date, [])
+        records[date].append({
+            'id': row['id'],
+            'name': row['name']
+        })
+    print(records)
+    return records
+
 @app.route("/")
 def index():
     id = session.get("user_id")
     if id != None:
-        records = db.execute("SELECT * FROM records WHERE id = :id", id=id)
+        rows = db.execute("SELECT * FROM records WHERE id = :id", id=id)
+        records = convert_records(rows)
     else:
         records = None
     return render_template("index.html", records=records)
