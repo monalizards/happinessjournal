@@ -67,7 +67,7 @@ def convert_records(rows):
 def index():
     id = session.get("user_id")
     if id != None:
-        rows = db.execute("SELECT * FROM records WHERE id = :id", id=id)
+        rows = db.execute("SELECT * FROM records WHERE user_id = :id", id=id)
         records = convert_records(rows)
     else:
         records = None
@@ -117,7 +117,7 @@ def login():
         rows = db.execute("SELECT * FROM users WHERE username = :username", username=request.form.get("username"))
         # Ensure username exists and password is correct
         if len(rows) != 1 or not verify(request.form.get("password"), rows[0]["hash"]):
-            return error("invalid username and/or password")
+            return error("Invalid username and/or password")
         # Remember which user has logged in
         session["user_id"] = rows[0]["id"]
         # Redirect user to home page
@@ -131,3 +131,25 @@ def login():
 def logout():
     session.clear()
     return redirect("/")
+
+# Write: create record
+@app.route("/write", methods=["POST"])
+@login_required
+def write():
+    if not request.form.get('name') or request.form.get('name').strip() == '':
+        return error("Cannot add empty record")
+    else:
+        db.execute("INSERT INTO records (user_id, name) VALUES (?,?)", session["user_id"], request.form.get('name'))
+        return redirect('/')
+
+# Delete: remove record
+@app.route("/delete/<id>")
+@login_required
+def delete(id):
+    creater_id = db.execute("SELECT user_id FROM records WHERE id = :id", id=id)[0]["user_id"]
+    print(creater_id, session.get('user_id'))
+    if creater_id != session.get('user_id'):
+        return error("Action not authorised")
+    else:
+        db.execute("DELETE FROM records WHERE id = :id", id=id)
+        return redirect('/')

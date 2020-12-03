@@ -12,21 +12,32 @@
 
 {% block body %}
     {% if session.get('user_id') %}
-        <div class="date-card">
-            <ul class="date-list">
-                {% for key in records %}
-                    <li>
-                        <h1>{{ key }}</h1>
-                        <ul class="record-list">
-                            {% for record in records[key] %}
-                                <li>
-                                    {{ record['name'] }}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
+        {% if records == {} %}
+        <h2>Nothing here yet</h2>
+        {% else %}
+            <div class="date-card">
+                <ul class="date-list">
+                    {% for key in records %}
+                        <li>
+                            <h1>{{ key }}</h1>
+                            <ul class="record-list">
+                                {% for record in records[key] %}
+                                    <li>
+                                        <div class="d-flex justify-content-between">
+                                            {{ record['name'] }}
+                                            <a class="a-white" href="/delete/{{ record['id'] }}"><i class="far fa-trash-alt"></i></a>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
     {% endif %}
+    
+    <form class="record-form" action="/write" method="post">
+        <input type="text" name="name" autocomplete="off" placeholder="What made you smile today?">
+    </form>
 {% endblock %}
