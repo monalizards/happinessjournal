@@ -1,3 +1,6 @@
+import re # https://docs.python.org/3/howto/regex.html
+from passlib.hash import sha256_crypt
+from datetime import datetime
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
@@ -31,6 +34,21 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+# Render error message
+def error(message, code=400):
+    return render_template("error.html", message=message, code=code)
+
+# Hashing password
+def hash(password):
+    return sha256_crypt.encrypt(password)
+
+# Verify password
+def verify(password, hash):
+    return sha256_crypt.verify(password, hash)
+
+# Convert date to sql datetime
+def convert_date(date):
+    return datetime.fromisoformat(date).isoformat()
 
 # TODO: index
 @app.route("/")
@@ -38,15 +56,32 @@ def login_required(f):
 def index():
     return render_template("index.html")
 
-# TODO: register
 @app.route("/register", methods=["GET", "POST"])
 def register():
     session.clear()
     # Perform checks and insert when a form is submitted via POST
     if request.method == "POST":
+        # Ensure all fields were filled
         if not request.form.get("username") or not request.form.get("email") or not request.form.get("password") or not request.form.get("confirm") or not request.form.get("birthday"):
-            return "error"
-        return "posted"
+            return error("Missing field(s)")
+        # Ensure username doesn't already exist
+        elif db.execute("SELECT * FROM users WHERE username = :username", username=request.form.get("username")):
+            return error("username already exists")
+        # Ensure password and confirmation matched
+        elif request.form.get("password") != request.form.get("confirm"):
+            return error("password and confirmation must match")
+            
+        # Insert new user into users
+        id = db.execute("INSERT INTO users (username, email, hash, birthday) values (?,?,?,?)",
+                   request.form.get("username"),
+                   request.form.get("email"),
+                   hash(request.form.get("password")),
+                   convert_date(request.form.get('birthday')))
+        
+        # Remember which user has logged in
+        session["user_id"] = id
+        # Redirect user to home page
+        return redirect("/")
         
     
     # Render registration form when a form is 
@@ -73,8 +108,3 @@ def login():
 def logout():
     session.clear()
     return redirect("/")
-
-# TODO: error
-# @app.route("/error")
-# def error():
-#     return "error form"
